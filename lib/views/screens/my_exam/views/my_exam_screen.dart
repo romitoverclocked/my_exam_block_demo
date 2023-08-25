@@ -7,6 +7,7 @@ import 'package:my_exam_block_demo/views/screens/my_exam/block/my_exam_state.dar
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/email_setting_widget.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/exam_list_tile.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/scans_list_widget.dart';
+import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/tab_selection_widget.dart';
 import 'package:my_exam_block_demo/views/widgets/custom_loader.dart';
 
 import '../../../widgets/custom_button.dart';
@@ -63,7 +64,7 @@ class _MyExamScreenState extends State<MyExamScreen> {
       return _sharedWithMeBody(state);
     }
     if (state.tabIndex == 2) {
-      return const EmailSettingWidget();
+      return  EmailSettingWidget();
     }
     return const SizedBox();
   }
