@@ -21,17 +21,12 @@ class _TabSelectionWidgetState extends State<TabSelectionWidget> {
   int selectedTab = 0;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       height: 35.h,
       margin: EdgeInsets.symmetric(vertical: 18.h),
       child: ListView.separated(
+        padding: REdgeInsets.symmetric(horizontal: 15.w),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return CustomButton(

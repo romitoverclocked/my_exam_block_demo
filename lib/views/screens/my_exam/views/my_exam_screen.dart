@@ -8,6 +8,7 @@ import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/email_sett
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/exam_list_tile.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/scans_list_widget.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/tab_selection_widget.dart';
+import 'package:my_exam_block_demo/views/screens/new_exam/views/new_exam_screen.dart';
 import 'package:my_exam_block_demo/views/widgets/custom_loader.dart';
 
 import '../../../widgets/custom_button.dart';
@@ -26,6 +27,7 @@ class _MyExamScreenState extends State<MyExamScreen> {
   void initState() {
     super.initState();
     block = context.read<MyExamBlock>();
+
     block.getDefaultData();
   }
 
@@ -44,10 +46,7 @@ class _MyExamScreenState extends State<MyExamScreen> {
 
           return CustomLoader(
             loading: state.loadData,
-            // opacity: 0.0,
-            child: SingleChildScrollView(
-              child: _body(state),
-            ),
+            child: _body(state),
           );
         },
         listener: (context, state) {},
@@ -64,7 +63,7 @@ class _MyExamScreenState extends State<MyExamScreen> {
       return _sharedWithMeBody(state);
     }
     if (state.tabIndex == 2) {
-      return  EmailSettingWidget();
+      return const EmailSettingWidget();
     }
     return const SizedBox();
   }
@@ -97,17 +96,40 @@ class _MyExamScreenState extends State<MyExamScreen> {
                   Spacer(),
                   CustomButton(
                     title: 'Create New',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => NewExamScreen(),
+                        ),
+                      );
+                    },
                     height: 40.h,
                     btnColor: ColorResource.orange,
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
-              _myExamDataListWidget(state),
             ],
           ),
-        )
+        ),
+        SizedBox(height: 10.h),
+        Expanded(
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
+            controller: state.scrollController,
+            itemBuilder: (context, index) {
+              return ExamListTile(
+                examData: state.myExamDataList?[index],
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                height: 15.h,
+              );
+            },
+            itemCount: state.myExamDataList?.length ?? 0,
+          ),
+        ),
+        if (state.loadPaginationData) const CircularProgressIndicator(),
       ],
     );
   }
@@ -123,55 +145,37 @@ class _MyExamScreenState extends State<MyExamScreen> {
           },
         ),
         SizedBox(height: 20.h),
-        _sharedWithMwListWidget(state)
+        state.sharedWithMeDataList?.isNotEmpty ?? false
+            ? Expanded(
+                child: ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  controller: state.scrollController,
+                  itemBuilder: (context, index) {
+                    return ExamListTile(
+                      examData: state.sharedWithMeDataList?[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      height: 15.h,
+                    );
+                  },
+                  itemCount: state.sharedWithMeDataList?.length ?? 0,
+                ),
+              )
+            : Container(
+                height: 200.h,
+                width: 200.w,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.high,
+                    image: AssetImage('assets/images/no_data_found_image.jfif'),
+                  ),
+                ),
+              )
       ],
     );
-  }
-
-  Widget _sharedWithMwListWidget(MyExamState state) {
-    return state.sharedWithMeExamData?.data?.isNotEmpty ?? false
-        ? ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ExamListTile(
-                examData: state.sharedWithMeExamData?.data?[index],
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 15.h,
-              );
-            },
-            itemCount: state.sharedWithMeExamData?.data?.length ?? 0)
-        : Container(
-            height: 200.h,
-            width: 200.w,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.high,
-                image: AssetImage('assets/images/no_data_found_image.jfif'),
-              ),
-            ),
-          );
-  }
-
-  Widget _myExamDataListWidget(MyExamState state) {
-    return ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return ExamListTile(
-            examData: state.myExamData?.data?.data?[index],
-          );
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 15.h,
-          );
-        },
-        itemCount: state.myExamData?.data?.data?.length ?? 0);
   }
 
   _topBarMyExam() {

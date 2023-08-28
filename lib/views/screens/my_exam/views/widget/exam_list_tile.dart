@@ -1,23 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_exam_block_demo/resources/base_url_resource.dart';
 import 'package:my_exam_block_demo/resources/color_resource.dart';
-import 'package:my_exam_block_demo/views/screens/my_exam/models/my_exam_data_model.dart';
+import 'package:my_exam_block_demo/views/screens/my_exam/models/exam_data_model.dart';
 import 'package:my_exam_block_demo/views/widgets/custom_button.dart';
 
 class ExamListTile extends StatelessWidget {
-  ExamListTile({super.key, required this.examData});
+  ExamListTile({super.key, this.examData});
 
-  Datum? examData;
+  ExamData? examData;
   String month = '';
 
   @override
   Widget build(BuildContext context) {
     String reviewStatus =
-        examData?.reviewStatus?.toString().substring(13).toLowerCase() ?? "";
+        examData?.reviewStatus?.toString().toLowerCase() ?? "";
+
+    print('data review status ::-->> ${examData?.reviewStatus}');
     print(reviewStatus);
     int mon = examData?.createdAt?.month ?? 1;
+
+    print('mon-->>$mon');
+    print('data mon -->>${examData?.createdAt}');
     switch (mon) {
       case 01:
         month = "january";
@@ -61,7 +65,7 @@ class ExamListTile extends StatelessWidget {
         Container(
           height: 55.h,
           width: 55.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(10),
             ),
@@ -96,38 +100,35 @@ class ExamListTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                reviewStatus == 'submitted' || reviewStatus == 'draft'
-                    ? Container(
-                        height: 15.h,
-                        width: 70.w,
-                        decoration: BoxDecoration(
-                          color: reviewStatus == 'submitted'
-                              ? ColorResource.green
-                              : ColorResource.darkRed,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(101),
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          reviewStatus == 'draft' ? 'In Draft' : 'Submitted',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : SizedBox(),
-                reviewStatus == 'submitted' || reviewStatus == 'draft'
-                    ? SizedBox(
-                        width: 10.w,
-                      )
-                    : SizedBox(),
-                reviewStatus == 'submitted' || reviewStatus == 'draft'
-                    ? Image.asset(
-                        height: 20.h,
-                        width: 20.h,
-                        'assets/images/verified_png_image.avif')
-                    : SizedBox(),
+                if (reviewStatus == 'submitted' || reviewStatus == 'draft')
+                  Container(
+                    height: 15.h,
+                    width: 70.w,
+                    decoration: BoxDecoration(
+                      color: reviewStatus == 'submitted'
+                          ? ColorResource.green
+                          : ColorResource.darkRed,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(101),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      reviewStatus == 'draft' ? 'In Draft' : 'Submitted',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                if (reviewStatus == 'submitted' || reviewStatus == 'draft')
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                if (reviewStatus == 'submitted' || reviewStatus == 'draft')
+                  Image.asset(
+                      height: 28.h,
+                      width: 28.h,
+                      'assets/images/verified_img.png'),
                 SizedBox(
-                  width: 15.w,
+                  width: 10.w,
                 ),
               ],
             ),

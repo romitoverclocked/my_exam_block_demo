@@ -32,6 +32,7 @@ class ScansListWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 10.h),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        padding: REdgeInsets.symmetric(horizontal: 15.w),
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
@@ -63,19 +64,18 @@ class ScansListWidget extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Text(
                   state.allScans?.data?[index].categoryName ?? "",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Spacer(),
-                selectedScan == state.allScans?.data?[index].id
-                    ? Container(
-                        height: 4.h,
-                        width: 55.w,
-                        color: Colors.white,
-                      )
-                    : SizedBox(),
+                const Spacer(),
+                if (selectedScan == state.allScans?.data?[index].id)
+                  Container(
+                    height: 4.h,
+                    width: 55.w,
+                    color: Colors.white,
+                  )
               ],
             ),
           );

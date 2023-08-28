@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:my_exam_block_demo/views/screens/my_exam/models/my_exam_data_model.dart';
-import 'package:my_exam_block_demo/views/screens/my_exam/models/shared_with_me_exam_model.dart';
+import 'package:flutter/material.dart';
+import 'package:my_exam_block_demo/views/screens/my_exam/models/exam_data_model.dart';
 
 import '../models/scans_model.dart';
 
@@ -10,60 +10,75 @@ enum TabStatus { INITIAL, LOAD, SUCCESS }
 class MyExamState extends Equatable {
   MyExamState({
     this.allScans,
-    this.myExamData,
+    this.myExamDataList,
     this.tabStatus,
-    this.sharedWithMeExamData,
+    this.sharedWithMeDataList,
     this.tabIndex = 0,
     this.selectedMyExamScan = 1,
     this.selectedSharedWithMeScan = 1,
     this.myExamApiCalled,
+    this.scrollController,
     this.sharedExamApiCalled,
+    this.myExamPage = 1,
     this.loadData = false,
+    this.loadPaginationData = false,
   });
 
   bool loadData = false;
 
-  TabStatus? tabStatus;
+  ScrollController? scrollController;
 
+  TabStatus? tabStatus;
+  int myExamPage = 1;
   int tabIndex = 0;
   int selectedMyExamScan = 1;
   int selectedSharedWithMeScan = 1;
   bool? myExamApiCalled;
   bool? sharedExamApiCalled;
+  bool loadPaginationData = false;
 
   ScansModel? allScans;
-  MyExamData? myExamData;
-  SharedWithMeExam? sharedWithMeExamData;
+  List<ExamData>? myExamDataList ;
+  List<ExamData>? sharedWithMeDataList ;
 
   @override
   List<Object?> get props => [
         allScans,
         tabIndex,
-        sharedWithMeExamData,
+        loadPaginationData,
+        scrollController,
+    sharedWithMeDataList,
         myExamApiCalled,
         tabStatus,
         selectedMyExamScan,
-        myExamData,
+    myExamDataList,
         sharedExamApiCalled,
         loadData,
+        myExamPage,
         selectedSharedWithMeScan,
       ];
 
   MyExamState copyWith(
       {ScansModel? allScans,
-      MyExamData? myExamData,
+      List<ExamData>? myExamDataList,
+      ScrollController? scrollController,
       bool? myExamApiCalled,
-      SharedWithMeExam? sharedWithMeExamData,
+      int? myExamPage,
+      List<ExamData>? sharedWithMeDataList,
       TabStatus? tabStatus,
       bool? sharedExamApiCalled,
       int? tabIndex,
+      bool? loadPaginationData,
       int? selectedMyExamScan,
       int? selectedSharedWithMeScan,
       bool? loadData}) {
     return MyExamState(
         allScans: allScans ?? this.allScans,
-        myExamData: myExamData ?? this.myExamData,
-        sharedWithMeExamData: sharedWithMeExamData ?? this.sharedWithMeExamData,
+        myExamDataList: myExamDataList ?? this.myExamDataList,
+        loadPaginationData: loadPaginationData ?? this.loadPaginationData,
+        myExamPage: myExamPage ?? this.myExamPage,
+        scrollController: scrollController ?? this.scrollController,
+        sharedWithMeDataList: sharedWithMeDataList ?? this.sharedWithMeDataList,
         tabStatus: tabStatus ?? this.tabStatus,
         myExamApiCalled: myExamApiCalled ?? this.myExamApiCalled,
         tabIndex: tabIndex ?? this.tabIndex,

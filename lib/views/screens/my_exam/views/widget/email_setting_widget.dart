@@ -81,7 +81,13 @@ class _EmailSettingWidgetState extends State<EmailSettingWidget> {
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
                         margin: EdgeInsets.only(
-                            bottom: 70.h, left: 40.w, right: 40.w),
+                          bottom: 70.h,
+                          left: 40.w,
+                          right: 40.w,
+                        ),
+                        duration:const Duration(
+                          seconds: 2,
+                        ),
                         content:
                             const Text('Email Settings Updated Successfully.'),
                       ),

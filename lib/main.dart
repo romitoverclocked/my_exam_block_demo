@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_exam_block_demo/sizes/sizes.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/block/my_exam_block.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/my_exam_screen.dart';
+import 'package:my_exam_block_demo/views/screens/new_exam/block/new_exam_block.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => MyExamBlock(),
+        ),
+        BlocProvider(
+          create: (context) => NewExamBlock(),
         )
       ],
       child: ScreenUtilInit(
