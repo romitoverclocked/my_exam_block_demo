@@ -54,10 +54,11 @@ class CustomIconButton extends StatelessWidget {
       required this.icon,
       required this.onTap,
       this.radius,
-      this.icnSize});
+      this.icnSize,this.iconColor});
 
   double? radius;
   double? icnSize;
+  Color? iconColor ;
 
   IconData icon;
   void Function() onTap;
@@ -72,7 +73,7 @@ class CustomIconButton extends StatelessWidget {
         child: Icon(
           icon,
           size: icnSize ?? 30,
-          color: Colors.black,
+          color: iconColor ?? Colors.black,
         ),
       ),
     );

@@ -16,12 +16,8 @@ class ExamListTile extends StatelessWidget {
     String reviewStatus =
         examData?.reviewStatus?.toString().toLowerCase() ?? "";
 
-    print('data review status ::-->> ${examData?.reviewStatus}');
-    print(reviewStatus);
     int mon = examData?.createdAt?.month ?? 1;
 
-    print('mon-->>$mon');
-    print('data mon -->>${examData?.createdAt}');
     switch (mon) {
       case 01:
         month = "january";

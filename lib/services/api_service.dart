@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
@@ -19,7 +18,7 @@ class ApiService {
   }
 
   static Future<http.Response?> postApi(
-      String url, Map<String, dynamic> body, Map<String, String> headers) async {
+      String url, body, Map<String, String> headers) async {
     log(url, name: 'POST API URL');
     log(headers.toString(), name: 'POST API HEADERS');
     log(body.toString(), name: 'POST API BODY');

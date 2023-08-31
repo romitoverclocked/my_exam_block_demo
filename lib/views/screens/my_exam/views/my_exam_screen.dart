@@ -112,23 +112,35 @@ class _MyExamScreenState extends State<MyExamScreen> {
           ),
         ),
         SizedBox(height: 10.h),
-        Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            controller: state.scrollController,
-            itemBuilder: (context, index) {
-              return ExamListTile(
-                examData: state.myExamDataList?[index],
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 15.h,
-              );
-            },
-            itemCount: state.myExamDataList?.length ?? 0,
-          ),
-        ),
+        state.myExamDataList?.isNotEmpty ?? false
+            ? Expanded(
+                child: ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  controller: state.scrollController,
+                  itemBuilder: (context, index) {
+                    return ExamListTile(
+                      examData: state.myExamDataList?[index],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      height: 15.h,
+                    );
+                  },
+                  itemCount: state.myExamDataList?.length ?? 0,
+                ),
+              )
+            : Container(
+                height: 200.h,
+                width: 200.w,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.high,
+                    image: AssetImage('assets/images/no_data_found_image.jfif'),
+                  ),
+                ),
+              ),
         if (state.loadPaginationData) const CircularProgressIndicator(),
       ],
     );
