@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -17,14 +18,24 @@ class ApiService {
     }
   }
 
+  static Future<Response?> dioPostApi(String url, body, Map<String, String> headers) async {
+    Dio dio = Dio();
+    try {
+      return  await dio.post(url, data: body, options: Options(headers: headers));
+
+    } catch (e) {
+      log(e.toString(), name: "DIO API FAILED");
+      return null;
+    }
+  }
+
   static Future<http.Response?> postApi(
       String url, body, Map<String, String> headers) async {
     log(url, name: 'POST API URL');
     log(headers.toString(), name: 'POST API HEADERS');
     log(body.toString(), name: 'POST API BODY');
     try {
-      return await http.post(Uri.parse(url),
-          body: body, headers: headers);
+      return await http.post(Uri.parse(url), body: body, headers: headers);
     } catch (e) {
       log(e.toString(), name: "API FAILED");
       return null;

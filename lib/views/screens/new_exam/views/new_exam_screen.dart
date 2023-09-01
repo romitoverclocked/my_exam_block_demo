@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +10,7 @@ import 'package:my_exam_block_demo/views/screens/new_exam/views/widget/first_pag
 import 'package:my_exam_block_demo/views/screens/new_exam/views/widget/second_page.dart';
 import 'package:my_exam_block_demo/views/screens/new_exam/views/widget/third_page.dart';
 import 'package:my_exam_block_demo/views/widgets/custom_loader.dart';
-import 'package:my_exam_block_demo/views/widgets/toast.dart';
+import 'package:toast/toast.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../models/item_type_model.dart';
@@ -24,6 +26,10 @@ class _NewExamScreenState extends State<NewExamScreen> {
   late NewExamBlock block;
   late NewExamState state;
   List<ItemTypeModel> itemList = [];
+  int selectedScanId = 0;
+  List<int> selectedFile = [];
+
+  int page = 1;
 
   @override
   void initState() {
@@ -35,7 +41,7 @@ class _NewExamScreenState extends State<NewExamScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _topBarNewExam(state.controller?.initialPage ?? 0),
+      appBar: _topBarNewExam(page),
       body: BlocConsumer<NewExamBlock, NewExamState>(
         bloc: block,
         builder: (context, state) {
@@ -50,6 +56,10 @@ class _NewExamScreenState extends State<NewExamScreen> {
             loading: state.loadData,
             child: PageView(
               controller: state.controller,
+              onPageChanged: (value) {
+                page = 1 + value;
+                setState(() {});
+              },
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 FirstPage(
@@ -57,7 +67,12 @@ class _NewExamScreenState extends State<NewExamScreen> {
                     itemList = p0;
                   },
                 ),
-                SecondPage(),
+                SecondPage(
+                  onChange: (scanId, files) {
+                    selectedFile = files;
+                    selectedScanId = scanId;
+                  },
+                ),
                 ThirdPage(),
               ],
             ),
@@ -65,30 +80,25 @@ class _NewExamScreenState extends State<NewExamScreen> {
         },
         listener: (context, state) {},
       ),
-      bottomNavigationBar: bottomButton(state.controller?.initialPage ?? 0),
+      bottomNavigationBar: bottomButton(page),
     );
   }
 
   Widget bottomButton(int page) {
-    return BlocBuilder<NewExamBlock, NewExamState>(builder: (context, state) {
-      if (state is LoadDataNewExamState) {
-        return const SizedBox();
-      }
-      return Padding(
-        padding:
-            EdgeInsets.only(left: 20.w, right: 20.w, bottom: 35.w, top: 25.w),
-        child: CustomButton(
-          title: 'Continue',
-          onTap: page == 0
-              ? firstPageContinue
-              : page == 1
-                  ? secondPageContinue
-                  : thirdPageSubmit,
-          height: 45.h,
-          btnColor: ColorResource.appColor,
-        ),
-      );
-    });
+    return Padding(
+      padding:
+          EdgeInsets.only(left: 20.w, right: 20.w, bottom: 35.w, top: 25.w),
+      child: CustomButton(
+        title: 'Continue',
+        onTap: page == 0
+            ? firstPageContinue
+            : page == 1
+                ? secondPageContinue
+                : thirdPageSubmit,
+        height: 45.h,
+        btnColor: ColorResource.appColor,
+      ),
+    );
   }
 
   _topBarNewExam(int page) {
@@ -136,7 +146,7 @@ class _NewExamScreenState extends State<NewExamScreen> {
                       top: 8.h,
                     ),
                     child: Text(
-                      '${1 + page}/3',
+                      '$page/3',
                       style: TextStyle(fontSize: 13.sp, color: Colors.grey),
                     ),
                   ),
@@ -154,17 +164,26 @@ class _NewExamScreenState extends State<NewExamScreen> {
 
   void thirdPageSubmit() {}
 
-  void secondPageContinue() {}
+  void secondPageContinue() {
+    ToastContext().init(context);
+    if (selectedScanId == 0) {
+      Toast.show(
+        'Please Select Scan',
+        duration: 2,
+        backgroundRadius: 10,
+      );
+    } else if (selectedFile.isEmpty) {
+      Toast.show(
+        'Please Select Scan File ',
+        duration: 2,
+        backgroundRadius: 10,
+      );
+    } else {
+      block.secondPageContinue(selectedScanId);
+    }
+  }
 
   void firstPageContinue() {
-    double size = 0;
-    itemList.forEach((element) {
-      final bytes = element.file?.readAsBytesSync().lengthInBytes;
-      var kb = bytes ?? 0 / 1024;
-      kb = kb / 100;
-      final mb = kb / 1024;
-      size = mb;
-    });
     if (itemList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -177,11 +196,19 @@ class _NewExamScreenState extends State<NewExamScreen> {
           duration: const Duration(
             seconds: 2,
           ),
-          content: const Text('Please Select Image Or Video'),
+          content: const Text('Please Select Image'),
         ),
       );
     } else {
-      if (size <= 150) {
+      double mb = 0;
+      itemList.forEach((element) {
+        final bytes = element.file?.readAsBytesSync().lengthInBytes;
+        final kb = (bytes ?? 0 / 1024) / 100;
+        mb = kb / 1024;
+      });
+      log(mb.toString(), name: 'Total SIZE in MB --> ');
+
+      if (mb <= 150) {
         block.firstPageContinue(itemList);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

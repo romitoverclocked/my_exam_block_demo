@@ -4,4 +4,5 @@ class BaseUrlResource{
   static String scanImageBaseUrl = "https://globalultrasoundinstitute.com/wp-content/uploads/portfolio-data/scantypes-images/";
 
 
+
 }

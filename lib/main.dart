@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_exam_block_demo/sizes/sizes.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/block/my_exam_block.dart';
 import 'package:my_exam_block_demo/views/screens/my_exam/views/my_exam_screen.dart';
 import 'package:my_exam_block_demo/views/screens/new_exam/block/new_exam_block.dart';

@@ -34,14 +34,17 @@ class _FirstPageState extends State<FirstPage> {
       List<String>? fileType = mimeStr?.split('/');
       if (fileType?[0].toLowerCase() == 'video') {
         Uint8List bytes = await videoImage(element.path);
-        itemsList.add(ItemTypeModel(
-            file: File(element.path), isVideo: true, videoImage: bytes));
+        itemsList.add(
+          ItemTypeModel(
+              file: File(element.path), isVideo: true, videoImage: bytes),
+        );
+        setState(() {});
       } else {
         itemsList.add(ItemTypeModel(file: File(element.path), isVideo: false));
+        setState(() {});
       }
     });
     widget.values(itemsList);
-    setState(() {});
   }
 
   Future<void> onTapCamera() async {
@@ -116,6 +119,7 @@ class _FirstPageState extends State<FirstPage> {
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
+                        fit: BoxFit.cover,
                         image: MemoryImage(
                           itemsList[index].videoImage ?? Uint8List(0),
                         ),
@@ -127,6 +131,7 @@ class _FirstPageState extends State<FirstPage> {
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
+                        fit: BoxFit.cover,
                         image:
                             FileImage(File(itemsList[index].file?.path ?? "")),
                       ),

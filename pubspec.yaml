@@ -48,6 +48,7 @@ dependencies:
       url: https://github.com/julek-kal/video_thumbnail
       ref: 734a2d5
   dio: ^5.3.2
+  toast: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

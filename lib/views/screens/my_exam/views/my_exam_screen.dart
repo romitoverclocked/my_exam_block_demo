@@ -10,6 +10,7 @@ import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/scans_list
 import 'package:my_exam_block_demo/views/screens/my_exam/views/widget/tab_selection_widget.dart';
 import 'package:my_exam_block_demo/views/screens/new_exam/views/new_exam_screen.dart';
 import 'package:my_exam_block_demo/views/widgets/custom_loader.dart';
+import 'package:toast/toast.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -26,6 +27,7 @@ class _MyExamScreenState extends State<MyExamScreen> {
   @override
   void initState() {
     super.initState();
+
     block = context.read<MyExamBlock>();
 
     block.getDefaultData();

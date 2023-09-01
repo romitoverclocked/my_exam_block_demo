@@ -3,10 +3,14 @@
 //     final examClipModel = examClipModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
-List<ExamClipModel> examClipModelFromJson(String str) => List<ExamClipModel>.from(json.decode(str).map((x) => ExamClipModel.fromJson(x)));
+List<ExamClipModel> examClipModelFromJson(String str) =>
+    List<ExamClipModel>.from(
+        json.decode(str).map((x) => ExamClipModel.fromJson(x)));
 
-String examClipModelToJson(List<ExamClipModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String examClipModelToJson(List<ExamClipModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ExamClipModel {
   int? id;
@@ -17,6 +21,8 @@ class ExamClipModel {
   String? clipFileVideo;
   int? status;
   DateTime? date;
+  bool? isVideo;
+  Uint8List? videoImg;
 
   ExamClipModel({
     this.id,
@@ -27,27 +33,33 @@ class ExamClipModel {
     this.clipFileVideo,
     this.status,
     this.date,
+    this.isVideo,
+    this.videoImg,
   });
 
   factory ExamClipModel.fromJson(Map json) => ExamClipModel(
-    id: json["id"],
-    portfolioId: json["portfolio_id"],
-    caseCategoryId: json["case_category_id"],
-    examId: json["exam_id"],
-    userId: json["user_id"],
-    clipFileVideo: json["clip_file_video"],
-    status: json["status"],
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
-  );
+        id: json["id"],
+        portfolioId: json["portfolio_id"],
+        caseCategoryId: json["case_category_id"],
+        examId: json["exam_id"],
+        userId: json["user_id"],
+        clipFileVideo: json["clip_file_video"],
+        status: json["status"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        isVideo: json['isVideo'],
+        videoImg: json['videoImg'],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "portfolio_id": portfolioId,
-    "case_category_id": caseCategoryId,
-    "exam_id": examId,
-    "user_id": userId,
-    "clip_file_video": clipFileVideo,
-    "status": status,
-    "date": date?.toIso8601String(),
-  };
+        "id": id,
+        "portfolio_id": portfolioId,
+        "case_category_id": caseCategoryId,
+        "exam_id": examId,
+        "user_id": userId,
+        "clip_file_video": clipFileVideo,
+        "status": status,
+        "date": date?.toIso8601String(),
+        'isVideo': isVideo,
+        'videoImg': videoImg,
+      };
 }
