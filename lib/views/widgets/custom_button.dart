@@ -41,7 +41,14 @@ class CustomButton extends StatelessWidget {
         ),
         child: Text(
           title ?? "",
-          style: TextStyle(color: titleColor, fontSize: 15.sp),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: titleColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 15.sp,
+          ),
         ),
       ),
     );
@@ -54,11 +61,12 @@ class CustomIconButton extends StatelessWidget {
       required this.icon,
       required this.onTap,
       this.radius,
-      this.icnSize,this.iconColor});
+      this.icnSize,
+      this.iconColor});
 
   double? radius;
   double? icnSize;
-  Color? iconColor ;
+  Color? iconColor;
 
   IconData icon;
   void Function() onTap;

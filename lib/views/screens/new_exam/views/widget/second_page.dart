@@ -35,6 +35,8 @@ class _SecondPageState extends State<SecondPage> {
     myExamBlock = context.read<MyExamBlock>();
   }
 
+  bool tile = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewExamBlock, NewExamState>(
@@ -45,6 +47,8 @@ class _SecondPageState extends State<SecondPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+
                 Text('Select Scan file(s)',
                     style: TextStyle(
                         fontSize: 22.sp, fontWeight: FontWeight.bold)),

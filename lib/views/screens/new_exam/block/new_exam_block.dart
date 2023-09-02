@@ -16,6 +16,27 @@ import '../models/item_type_model.dart';
 class NewExamBlock extends Cubit<NewExamState> {
   NewExamBlock() : super(NewExamState());
 
+  void onTapPresentAbsentButton(int scanIntIndex, int scanListIndex) {
+    List<ExamInterpretationsModel>? list = state.examInterpretationsList;
+    ExamInterpretationsModel? selectedElement = list?[scanIntIndex];
+
+    selectedElement?.selectedValue =
+        selectedElement.scanValueList?[scanListIndex];
+    list?[scanIntIndex] = selectedElement!;
+    emit(state.copyWith(examInterpretationsList: list));
+  }
+
+  void onTapPresentAbsentChildrenButton(
+      int index, int childrenIndex, int scanListIndex) {
+    List<ExamInterpretationsModel>? list = state.examInterpretationsList;
+    list?[index].children?[childrenIndex].selectedValue = state
+        .examInterpretationsList?[index]
+        .children?[childrenIndex]
+        .scanValueList?[scanListIndex];
+
+    emit(state.copyWith(examInterpretationsList: list));
+  }
+
   void onTapSelectedFiles(int id) {
     List<int> list = state.selectedFiles ?? [];
     if (list.contains(id)) {

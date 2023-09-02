@@ -29,13 +29,14 @@ class _NewExamScreenState extends State<NewExamScreen> {
   int selectedScanId = 0;
   List<int> selectedFile = [];
 
-  int page = 1;
+  int page = 0;
 
   @override
   void initState() {
     super.initState();
     block = context.read<NewExamBlock>()..getExamClips();
     state = block.state;
+    page = (state.controller?.initialPage ?? 0 + 1);
   }
 
   @override
@@ -57,7 +58,7 @@ class _NewExamScreenState extends State<NewExamScreen> {
             child: PageView(
               controller: state.controller,
               onPageChanged: (value) {
-                page = 1 + value;
+                page = value;
                 setState(() {});
               },
               physics: const NeverScrollableScrollPhysics(),
@@ -80,25 +81,66 @@ class _NewExamScreenState extends State<NewExamScreen> {
         },
         listener: (context, state) {},
       ),
-      bottomNavigationBar: bottomButton(page),
+      bottomNavigationBar: bottomButton(),
     );
   }
 
-  Widget bottomButton(int page) {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: 20.w, right: 20.w, bottom: 35.w, top: 25.w),
-      child: CustomButton(
-        title: 'Continue',
-        onTap: page == 0
-            ? firstPageContinue
-            : page == 1
-                ? secondPageContinue
-                : thirdPageSubmit,
-        height: 45.h,
-        btnColor: ColorResource.appColor,
-      ),
-    );
+  Widget bottomButton() {
+    return page == 2
+        ? Padding(
+            padding: EdgeInsets.only(
+              left: 20.w,
+              right: 20.w,
+              bottom: 35.w,
+              top: 10.h,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 45.h,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 1.5.w),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ColorResource.appColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(11),
+                    ),
+                  ),
+                  child: CustomButton(
+                    title: 'Save Exam as Draft',
+                    onTap: () {},
+                    height: 43.h,
+                    titleColor: ColorResource.appColor,
+                    btnColor: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                CustomButton(
+                  title: 'Submit Exam',
+                  onTap: () {},
+                  height: 45.h,
+                  btnColor: ColorResource.appColor,
+                ),
+              ],
+            ),
+          )
+        : Padding(
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, bottom: 35.w, top: 25.w),
+            child: CustomButton(
+              title: 'Continue',
+              onTap: page == 0
+                  ? firstPageContinue
+                  : page == 1
+                      ? secondPageContinue
+                      : null,
+              height: 45.h,
+              btnColor: ColorResource.appColor,
+            ),
+          );
   }
 
   _topBarNewExam(int page) {
@@ -146,7 +188,7 @@ class _NewExamScreenState extends State<NewExamScreen> {
                       top: 8.h,
                     ),
                     child: Text(
-                      '$page/3',
+                      '${page + 1}/3',
                       style: TextStyle(fontSize: 13.sp, color: Colors.grey),
                     ),
                   ),

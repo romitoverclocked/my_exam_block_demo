@@ -21,7 +21,7 @@ class NewExamApi {
         headers);
     if (response?.statusCode == 200) {
       Map map = jsonDecode(response?.body ?? '');
-      print('this is Map $map');
+      log(map.toString(),name: 'get scan interpretations data -->');
       List<ExamInterpretationsModel> list = List<ExamInterpretationsModel>.from(
         map['data'].map(
           (e) => ExamInterpretationsModel.fromJson(e),
